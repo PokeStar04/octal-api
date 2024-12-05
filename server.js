@@ -583,6 +583,8 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
 
                     // // Calcul du coût actuel
                     const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
+                    console.log("J'ai consoActuel ",selectedDpeData.conso5UsagesParM2 ,coutEnergy, selectedDpeData.surface_habitable_logement)
+
                     console.log("J'ai consoActuel ",consoActuel)
 
                     // Calcul des consommations prévues
