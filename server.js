@@ -640,7 +640,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             longitude: longitude || null,
                             IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
-                            conso_actuel_annuel: consoActuel || null,
+                            //conso_actuel_annuel: consoActuel || null,
                             // conso_prev_dpeB_min_annuel : conso_prev_min || null,
                             // conso_prev_dpeB_average: conso_prev_average || null,
                             // conso_prev_dpeB_max: conso_prev_max,
