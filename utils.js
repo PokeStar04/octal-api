@@ -93,7 +93,7 @@ const { supabase, pool } = require('./db'); // Importer les connexions
         // Récupération des consommations pour la classe DPE donnée
         const { data, error } = await supabase
             .from('dpeCoutAnnuel_kwh_m2_an') // Nom de la table
-            .select('consommation_min, consommation_moyenne, consommation_max') // Colonnes à récupérer
+            .select('consommation_min, consommation_moyen, consommation_max') // Colonnes à récupérer
             .eq('classe_dpe', classeDpe); // Filtre par classe DPE
 
         if (error) {
