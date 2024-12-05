@@ -748,6 +748,66 @@ app.post('/set-echec-status', async (req, res) => {
     }
 });
 
+// Endpoint pour ajouter un utilisateur et son adresse
+
+
+
+app.post('/add-user-with-address', async (req, res) => {
+    const { 
+        nom, 
+        prenom, 
+        numero, 
+        numero_voie, 
+        Adresse_BAN, 
+        Code_postal_BAN, 
+        Nom_rue_BAN 
+    } = req.body;
+
+    // Validation des paramètres
+    if (!nom || !prenom || !numero || !numero_voie || !Adresse_BAN || !Code_postal_BAN || !Nom_rue_BAN) {
+        return res.status(400).json({
+            error: 'Missing parameters. Required: nom, prenom, numero, numero_voie, Adresse_BAN, Code_postal_BAN, Nom_rue_BAN',
+        });
+    }
+
+    try {
+        // Insertion dans la base de données via Supabase
+        const { data, error } = await supabase
+            .from('userTB')
+            .insert([
+                {
+                    nom: nom,
+                    prenom: prenom,
+                    numero: numero,
+                    "N°_voie(BAN)": numero_voie,
+                    "Adresse_(BAN)": Adresse_BAN,
+                    "Code_postal_(BAN)": Code_postal_BAN,
+                    "Nom_rue_(BAN)": Nom_rue_BAN,
+                },
+            ]);
+
+        // Gestion des erreurs
+        if (error) {
+            console.error('Erreur lors de l\'insertion dans Supabase:', error);
+            return res.status(500).json({
+                error: 'Failed to add user to the database',
+            });
+        }
+
+        // Réponse en cas de succès
+        res.status(200).json({
+            message: 'User and address added successfully',
+            user: data,
+        });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        res.status(500).json({
+            error: 'An unexpected error occurred',
+        });
+    }
+})
+
+
 
 
 
@@ -837,3 +897,4 @@ app.post('/create-energy-cost', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
