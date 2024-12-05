@@ -579,7 +579,8 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     console.log("J'ai coutEnergy ",coutEnergy)
                     // Récupérer les consommations min, moyenne et max pour la classe DPE
                     const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
-                    console.log("J'ai DPE ",getDpeConso.consommation_min)
+                    console.log("J'ai DPE ",getDpeConso)
+                    console.log("J'ai DPE ",getDpeConso[0])
 
                     // // Calcul du coût actuel
                     const conso_actuel_annuel = selectedDpeData.conso_5_usages_par_m2 * coutEnergy * selectedDpeData.surface_habitable_logement;
@@ -588,24 +589,24 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     // console.log("J'ai consoActuel ",consoActuel)
 
                     // Calcul des consommations prévues
-                    const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
-                    const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
-                    const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
-                    console.log(conso_prev_min_m2,conso_prev_average_m2,conso_prev_max_m2)
-                    // // Finalisation des calculs
-                    const conso_prev_min = conso_prev_min_m2 * selectedDpeData.surface_habitable_logement ;
-                    const conso_prev_average = conso_prev_average_m2 * selectedDpeData.surface_habitable_logement;
-                    const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
-                    console.log(conso_prev_min,conso_prev_average,conso_prev_max)
+                    // const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
+                    // const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
+                    // const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
+                    // console.log(conso_prev_min_m2,conso_prev_average_m2,conso_prev_max_m2)
+                    // // // Finalisation des calculs
+                    // const conso_prev_min = conso_prev_min_m2 * selectedDpeData.surface_habitable_logement ;
+                    // const conso_prev_average = conso_prev_average_m2 * selectedDpeData.surface_habitable_logement;
+                    // const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
+                    // console.log(conso_prev_min,conso_prev_average,conso_prev_max)
 
-                    const economies_annuelles_min = consoActuel - conso_prev_min ;
-                    const economies_annuelles_average = consoActuel - conso_prev_average;
-                    const economies_annuelles_max = consoActuel - conso_prev_max;
-                    console.log(economies_annuelles_min,economies_annuelles_average,economies_annuelles_max)
+                    // const economies_annuelles_min = consoActuel - conso_prev_min ;
+                    // const economies_annuelles_average = consoActuel - conso_prev_average;
+                    // const economies_annuelles_max = consoActuel - conso_prev_max;
+                    // console.log(economies_annuelles_min,economies_annuelles_average,economies_annuelles_max)
 
-                    const ROI_MIN = economies_annuelles_min;
-                    const ROI_AVERAGE = economies_annuelles_average;
-                    const ROI_MAX = economies_annuelles_max;
+                    // const ROI_MIN = economies_annuelles_min;
+                    // const ROI_AVERAGE = economies_annuelles_average;
+                    // const ROI_MAX = economies_annuelles_max;
 
 
                     const IPE = await calculateIPE(selectedDpeData);
@@ -645,12 +646,12 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
                             conso_actuel_annuel: conso_actuel_annuel || null,
-                            conso_prev_dpeB_min_annuel : conso_prev_min || null,
-                            conso_prev_dpeB_average: conso_prev_average || null,
-                            conso_prev_dpeB_max: conso_prev_max,
-                            ROI_MIN : ROI_MIN || null,
-                            ROI_AVERAGE :ROI_AVERAGE || null,
-                            ROI_MAX: ROI_MAX || null,
+                            // conso_prev_dpeB_min_annuel : conso_prev_min || null,
+                            // conso_prev_dpeB_average: conso_prev_average || null,
+                            // conso_prev_dpeB_max: conso_prev_max,
+                            // ROI_MIN : ROI_MIN || null,
+                            // ROI_AVERAGE :ROI_AVERAGE || null,
+                            // ROI_MAX: ROI_MAX || null,
 
                         },
                     ]);

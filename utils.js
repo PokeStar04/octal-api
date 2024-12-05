@@ -88,7 +88,7 @@ const { supabase, pool } = require('./db'); // Importer les connexions
 
 
 
- async function recupererConsoDPE(classeDpe = 'B') { // Par défaut, utilise "DPE"
+ async function recupererConsoDPE(classeDpe) { // Par défaut, utilise "DPE"
     try {
         // Récupération des consommations pour la classe DPE donnée
         const { data, error } = await supabase
