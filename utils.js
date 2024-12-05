@@ -1,4 +1,4 @@
- export function getDpeScore(dpeClass) {
+ function getDpeScore(dpeClass) {
     const dpeScores = {
         A: 1,
         B: 1.5,
@@ -11,7 +11,7 @@
     return dpeScores[dpeClass] || null; // Retourne null si le DPE est invalide
 }
 
- export async function calculateIPE(selectedDpeData) {
+ async function calculateIPE(selectedDpeData) {
     try {
         // Étape 1: Récupérer le DPE score
         const dpeClass = selectedDpeData?.etiquette_DPE || null;
@@ -53,7 +53,7 @@
 
 
 // Fonction pour récupérer le coût moyen à partir du type de chauffage
-export async function recupererCoutMoyen(chauffage) {
+async function recupererCoutMoyen(chauffage) {
     try {
         // Récupération du coût moyen pour le type de chauffage donné
         const { data, error } = await supabase
@@ -113,29 +113,8 @@ export async function recupererConsoDPE(classeDpe = 'B') { // Par défaut, utili
     }
 }
 
-export async function calculerConso(classeDpe, coutEnergy) {
-    try {
-        // Récupérer les consommations min, moyenne, max pour la classe DPE
-        const consommations = await recupererConsoDPE(classeDpe);
 
-        // Effectuer les calculs
-        const conso_prev_min_m2 = consommations.consommation_min * coutEnergy;
-        const conso_prev_average_m2 = consommations.consommation_moyenne * coutEnergy;
-        const conso_prev_max_m2 = consommations.consommation_max * coutEnergy;
-
-        // Retourner les résultats
-        return {
-            conso_prev_min_m2,
-            conso_prev_average_m2,
-            conso_prev_max_m2,
-        };
-    } catch (err) {
-        console.error('Erreur lors du calcul des consommations :', err.message);
-        throw err; // Relance l'erreur pour être gérée par l'appelant
-    }
-}
-
-module.exports = { getDpeScore, calculateIPE, recupererCoutMoyen, recupererConsoDPE, calculerConso };
+module.exports = { getDpeScore, calculateIPE, recupererCoutMoyen , recupererConsoDPE };
 
 
 
