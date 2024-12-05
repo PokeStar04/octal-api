@@ -654,7 +654,7 @@ app.post('/set-success-status', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('userVerified')
-            .update({ userVerified: true }) // Définit le statut success
+            .update({ status: "success" }) // Définit le statut success
             .eq('id', id);
 
         if (error) {
@@ -680,7 +680,7 @@ app.post('/set-echec-status', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('userVerified')
-            .update({ userVerified: false }) // Définit le statut echec
+            .update({ status: "lost" }) // Définit le statut echec
             .eq('id', id);
 
         if (error) {
