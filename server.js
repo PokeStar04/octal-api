@@ -576,19 +576,14 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
 
                     // Récupérer le coût énergétique pour le type de chauffage
                     const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
-                    console.log("J'ai coutEnergy ",coutEnergy)
                     // Récupérer les consommations min, moyenne et max pour la classe DPE
                     const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
-                    console.log("J'ai DPE ",getDpeConso)
-                    console.log("J'ai DPE ",getDpeConso[0])
 
                     // // Calcul du coût actuel
                     const conso_actuel_annuel_kw = selectedDpeData.conso_5_usages_par_m2 *  selectedDpeData.surface_habitable_logement;
 
                     const conso_actuel_annuel_euro = selectedDpeData.conso_5_usages_par_m2 * coutEnergy * selectedDpeData.surface_habitable_logement;
-                    console.log("J'ai consoActuel ",selectedDpeData.conso_5_usages_par_m2 ,coutEnergy, selectedDpeData.surface_habitable_logement)
 
-                    console.log("J'ai consoActuel ",conso_actuel_annuel)
 
                     //Calcul des consommations prévues
                     const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
@@ -647,7 +642,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             longitude: longitude || null,
                             IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
-                            conso_actuel_annuel: conso_actuel_annuel_euro || null,
+                            conso_actuel_annuel_euro: conso_actuel_annuel_euro || null,
                             conso_actuel_annuel_kw: conso_actuel_annuel_kw || null,
                             conso_prev_dpeB_min_annuel : conso_prev_min || null,
                             conso_prev_dpeB_average: conso_prev_average || null,
