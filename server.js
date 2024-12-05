@@ -596,9 +596,9 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
                     console.log(conso_prev_min,conso_prev_average,conso_prev_max)
 
-                    const economies_annuelles_min = conso_actuel_annuel_euro - conso_prev_min ;
-                    const economies_annuelles_average = conso_actuel_annuel_euro - conso_prev_average;
-                    const economies_annuelles_max = conso_actuel_annuel_euro - conso_prev_max;
+                    const economies_annuelles_min = (conso_actuel_annuel_euro - conso_prev_min) * -1 ;
+                    const economies_annuelles_average = (conso_actuel_annuel_euro - conso_prev_average) * -1;
+                    const economies_annuelles_max = (conso_actuel_annuel_euro - conso_prev_max) * -1;
                     console.log(economies_annuelles_min,economies_annuelles_average,economies_annuelles_max)
 
                     const ROI_MIN = economies_annuelles_min;
