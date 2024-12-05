@@ -4,7 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const { getDpeScore, calculateIPE } = require ('./utils.js');
+const { getDpeScore, calculateIPE,recupererCoutMoyen ,recupererConsoDPE,calculerConso} = require ('./utils.js');
 
 // Middleware pour parser le JSON
 app.use(express.json());
@@ -605,12 +605,6 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     const ROI_AVERAGE = economies_annuelles_average;
                     const ROI_MAX = economies_annuelles_max;
 
-
-
-            
-                   
-            
-                
 
                     const IPE = await calculateIPE(selectedDpeData);
 
