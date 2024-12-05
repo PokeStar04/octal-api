@@ -59,7 +59,7 @@ const { supabase, pool } = require('./db'); // Importer les connexions
     try {
         // Récupération du coût moyen pour le type de chauffage donné
         const { data, error } = await supabase
-            .from('energyCost')
+            .from('energyCosts')
             .select('cout_moyen_kwh') // On sélectionne uniquement la colonne coût
             .eq('type_chauffage', chauffage); // On filtre par type de chauffage
 
