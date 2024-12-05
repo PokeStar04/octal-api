@@ -572,6 +572,95 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                         IRE = calculatedIRE; // Assignez la valeur calculée de l'IRE
                     }// Retourner l'utilisateur avec ses données combinées
 
+                    try {
+                        // Vérifiez si le type de chauffage est présent
+                    
+                        // Si le type de chauffage est disponible, calculez l'IRE
+                        if (typeChauffage) {
+                            const calculatedIRE = await calculateIRE(typeChauffage, selectedDpeData);
+                            if (calculatedIRE) {
+                                IRE = calculatedIRE; // Assignez la valeur calculée de l'IRE
+                            } else {
+                                console.warn("IRE n'a pas pu être calculé.");
+                            }
+                        } else {
+                            console.warn("Type de chauffage non disponible.");
+                        }
+                    
+                        // Vérifiez la présence de la donnée pour le coût énergétique
+                        let coutEnergy = 0;
+                        if (selectedDpeData?.chauffage) {
+                            coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
+                            if (!coutEnergy) {
+                                console.warn("Impossible de récupérer le coût énergétique.");
+                                coutEnergy = 0; // Valeur par défaut pour éviter les calculs cassés
+                            }
+                        } else {
+                            console.warn("Type de chauffage non fourni pour le coût énergétique.");
+                        }
+                    
+                        // Vérifiez la classe DPE avant de récupérer les consommations
+                        let getDpeConso = { consommation_min: 0, consommation_moyenne: 0, consommation_max: 0 };
+                        const classeDpe = selectedDpeData?.classeDpe || 'B'; // Utilisez une valeur par défaut si non fournie
+                        getDpeConso = await recupererConsoDPE(classeDpe);
+                        if (!getDpeConso) {
+                            console.warn("Impossible de récupérer les consommations pour la classe DPE.");
+                        }
+                    
+                        // Vérifiez la surface habitable avant de faire les calculs
+                        const surface = selectedDpeData?.surface_habitable_logement || 0;
+                        if (surface <= 0) {
+                            console.warn("Surface habitable non fournie ou invalide. Les calculs seront basés sur une surface de 0.");
+                        }
+                    
+                        // Calcul du coût actuel
+                        const consoActuel = selectedDpeData?.conso5UsagesParM2
+                            ? selectedDpeData.conso5UsagesParM2 * coutEnergy * surface
+                            : 0;
+                    
+                        // Calcul des consommations prévues
+                        const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
+                        const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
+                        const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
+                    
+                        const conso_prev_min = conso_prev_min_m2 * surface;
+                        const conso_prev_average = conso_prev_average_m2 * surface;
+                        const conso_prev_max = conso_prev_max_m2 * surface;
+                    
+                        // Calcul des économies annuelles
+                        const economies_annuelles_min = consoActuel - conso_prev_min;
+                        const economies_annuelles_average = consoActuel - conso_prev_average;
+                        const economies_annuelles_max = consoActuel - conso_prev_max;
+                    
+                        // Calcul du ROI
+                        const ROI_MIN = economies_annuelles_min > 0 ? economies_annuelles_min : 0;
+                        const ROI_AVERAGE = economies_annuelles_average > 0 ? economies_annuelles_average : 0;
+                        const ROI_MAX = economies_annuelles_max > 0 ? economies_annuelles_max : 0;
+                    
+                        // Calcul de l'IPE
+                        const IPE = await calculateIPE(selectedDpeData);
+                    
+                        // Résultats finaux
+                        console.log({
+                            IRE,
+                            coutEnergy,
+                            consoActuel,
+                            conso_prev_min,
+                            conso_prev_average,
+                            conso_prev_max,
+                            economies_annuelles_min,
+                            economies_annuelles_average,
+                            economies_annuelles_max,
+                            ROI_MIN,
+                            ROI_AVERAGE,
+                            ROI_MAX,
+                            IPE,
+                        });
+                    
+                    } catch (error) {
+                        console.error("Erreur lors de l'exécution des calculs :", error.message);
+                    }
+                    
 
                     // // Récupérer le coût énergétique pour le type de chauffage
                     // const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
