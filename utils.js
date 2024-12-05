@@ -116,5 +116,3 @@
 
 module.exports = { calculateIPE, recupererCoutMoyen , recupererConsoDPE };
 
-
-
