@@ -588,7 +588,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
 
                     // console.log("J'ai consoActuel ",consoActuel)
 
-                    Calcul des consommations prévues
+                    //Calcul des consommations prévues
                     const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
                     const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
                     const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
