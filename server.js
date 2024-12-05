@@ -583,7 +583,9 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     console.log("J'ai DPE ",getDpeConso[0])
 
                     // // Calcul du coût actuel
-                    const conso_actuel_annuel = selectedDpeData.conso_5_usages_par_m2 * coutEnergy * selectedDpeData.surface_habitable_logement;
+                    const conso_actuel_annuel_kw = selectedDpeData.conso_5_usages_par_m2 *  selectedDpeData.surface_habitable_logement;
+
+                    const conso_actuel_annuel_euro = selectedDpeData.conso_5_usages_par_m2 * coutEnergy * selectedDpeData.surface_habitable_logement;
                     console.log("J'ai consoActuel ",selectedDpeData.conso_5_usages_par_m2 ,coutEnergy, selectedDpeData.surface_habitable_logement)
 
                     console.log("J'ai consoActuel ",conso_actuel_annuel)
@@ -645,7 +647,8 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             longitude: longitude || null,
                             IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
-                            conso_actuel_annuel: conso_actuel_annuel || null,
+                            conso_actuel_annuel: conso_actuel_annuel_euro || null,
+                            conso_actuel_annuel_kw: conso_actuel_annuel_kw || null,
                             conso_prev_dpeB_min_annuel : conso_prev_min || null,
                             conso_prev_dpeB_average: conso_prev_average || null,
                             conso_prev_dpeB_max: conso_prev_max,
@@ -673,7 +676,6 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
                         },
-
                     };
                 } catch (error) {
                     console.error(`Erreur pour l'utilisateur ${user.nom} ${user.prenom}:`, error.message);
@@ -683,7 +685,6 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                 }
             })
         );
-
         // Étape 3: Retourner les utilisateurs enrichis
         res.status(200).json({ users: usersCombinedData });
     } catch (error) {
