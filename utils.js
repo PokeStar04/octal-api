@@ -135,7 +135,7 @@ export async function calculerConso(classeDpe, coutEnergy) {
     }
 }
 
-module.exports = { getDpeScore, calculateIPE, recupererCoutMoyen, recupererConsoDPE,calculerConso };
+module.exports = { getDpeScore, calculateIPE, recupererCoutMoyen, recupererConsoDPE, calculerConso };
 
 
 
