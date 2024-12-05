@@ -604,7 +604,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     // const ROI_MAX = economies_annuelles_max;
 
 
-                    // const IPE = await calculateIPE(selectedDpeData);
+                    const IPE = await calculateIPE(selectedDpeData);
 
                     // Sauvegarder dans la table generalTable
                     const insertResponse = await supabase.from('userVerified').insert([
