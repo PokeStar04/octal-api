@@ -109,7 +109,7 @@ const { supabase, pool } = require('./db'); // Importer les connexions
         // Retourne les consommations récupérées
         return {
             consommation_min: data[0].consommation_min,
-            consommation_moyenne: data[0].consommation_moyen,
+            consommation_moyen: data[0].consommation_moyen,
             consommation_max: data[0].consommation_max,
         };
     } catch (err) {
