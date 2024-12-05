@@ -578,12 +578,12 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
                     console.log("J'ai coutEnergy ",coutEnergy)
                                         // Récupérer les consommations min, moyenne et max pour la classe DPE
-                    const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
-                    console.log("J'ai DPE ",getDpeConso)
+                    // const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
+                    // console.log("J'ai DPE ",getDpeConso)
 
-                    // Calcul du coût actuel
-                    const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
-                    console.log("J'ai consoActuel ",consoActuel)
+                    // // Calcul du coût actuel
+                    // const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
+                    // console.log("J'ai consoActuel ",consoActuel)
 
                     // Calcul des consommations prévues
                     // const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
