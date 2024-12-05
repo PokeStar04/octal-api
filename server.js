@@ -4,7 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const { getDpeScore, calculateIPE,recupererCoutMoyen ,recupererConsoDPE,calculerConso} = require ('./utils.js');
+const {  calculateIPE, recupererCoutMoyen, recupererConsoDPE} = require ('./utils.js');
 
 // Middleware pour parser le JSON
 app.use(express.json());
