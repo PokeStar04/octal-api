@@ -485,8 +485,12 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     }
 
 
-
-
+                    const { data: users, error } = await supabase.from('usersTB').select('*');
+                    if (error) {
+                        console.error('Erreur lors de la récupération des utilisateurs:', error.message);
+                        return res.status(500).json({ error: 'Erreur lors de la récupération des utilisateurs.' });
+                    }
+                    //ROI = selectedDpeData.conso5UsagesParM2
 
 
                     const dpeData = ademeResponse.data.results.map((result) => {
@@ -500,6 +504,8 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             "Type_bâtiment": typeBatiment,
                             "Type_installation_chauffage": typeInstallationChauffage,
                             "Type_énergie_principale_ECS": typeEnergiePrincipaleECS,
+                            "Type_énergie_n°1": chauffage,
+
                             "Période_construction": periodeConstruction,
                             "Etiquette_DPE": etiquetteDpe,
                             "Hauteur_sous-plafond": hauteurSousPlafond,
@@ -537,6 +543,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             nombreAppartement: nombreAppartement,
                             typeInstallationECS: typeInstallationECS,
                             typeEnergiePrincipaleECS:typeEnergiePrincipaleECS,
+                            chauffage: chauffage,
                             adresse_brute: adresseBrute,
                             coordX,
                             coordY,
@@ -550,7 +557,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             conso_refroidissement: consoRefroidissement,
                         };
                     });
-            
+
 
                     // A dinamiser
                     // Filtrer les données DPE pour ne conserver que celles avec le numéro de voie correspondant
@@ -559,8 +566,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
 
                     // Si des entrées existent, sélectionner uniquement la première
                     const selectedDpeData = filteredDpeData.length > 0 ? filteredDpeData[0] : null; 
-                    
-                    
+
                     // Vérifiez si le type de chauffage est présent
                     const typeChauffage = selectedDpeData?.typeEnergiePrincipaleECS || null;
                     let IRE = null;
@@ -570,7 +576,42 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                         const { IRE: calculatedIRE } = await calculateIRE(typeChauffage, selectedDpeData);
                         IRE = calculatedIRE; // Assignez la valeur calculée de l'IRE
                     }// Retourner l'utilisateur avec ses données combinées
+
+
+                    // Récupérer le coût énergétique pour le type de chauffage
+                    const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
+            
+                    // Récupérer les consommations min, moyenne et max pour la classe DPE
+                    const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
+            
+                    // Calcul du coût actuel
+                    const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
+            
+                    // Calcul des consommations prévues
+                    const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
+                    const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
+                    const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
+            
+                    // Finalisation des calculs
+                    const conso_prev_min = conso_prev_min_m2 * selectedDpeData.surface_habitable_logement ;
+                    const conso_prev_average = conso_prev_average_m2 * selectedDpeData.surface_habitable_logement;
+                    const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
+
+                    const economies_annuelles_min = consoActuel - conso_prev_min ;
+                    const economies_annuelles_average = consoActuel - conso_prev_average;
+                    const economies_annuelles_max = consoActuel - conso_prev_max;
+
+                    const ROI_MIN = economies_annuelles_min;
+                    const ROI_AVERAGE = economies_annuelles_average;
+                    const ROI_MAX = economies_annuelles_max;
+
+
+
+            
                    
+            
+                
+
                     const IPE = await calculateIPE(selectedDpeData);
 
                     // Sauvegarder dans la table generalTable
@@ -601,10 +642,19 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             conso_ecs: selectedDpeData ? selectedDpeData.conso_ecs : null,
                             conso_auxiliaires: selectedDpeData ? selectedDpeData.conso_auxiliaires : null,
                             conso_refroidissement: selectedDpeData ? selectedDpeData.conso_refroidissement : null,
+                            chauffage: selectedDpeData ? selectedDpeData.chauffage : null,
                             latitude: latitude || null,
                             longitude: longitude || null,
-                            IRE: IRE, // Remplir si l'IRE est calculé ou laisser null
+                            IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
                             IPE: IPE || null ,
+                            conso_actuel_annuel: consoActuel || null,
+                            conso_prev_dpeB_min_annuel : conso_prev_min || null,
+                            conso_prev_dpeB_average: conso_prev_average || null,
+                            conso_prev_dpeB_max: conso_prev_max,
+                            ROI_MIN : ROI_MIN || null,
+                            ROI_AVERAGE :ROI_AVERAGE || null,
+                            ROI_MAX: ROI_MAX || null,
+
                         },
                     ]);
                         if (insertResponse.error) {

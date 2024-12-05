@@ -46,4 +46,96 @@
     }
 }
 
-module.exports = { getDpeScore, calculateIPE };
+
+
+
+
+
+
+// Fonction pour récupérer le coût moyen à partir du type de chauffage
+async function recupererCoutMoyen(chauffage) {
+    try {
+        // Récupération du coût moyen pour le type de chauffage donné
+        const { data, error } = await supabase
+            .from('energyCost')
+            .select('cout_moyen_kwh') // On sélectionne uniquement la colonne coût
+            .eq('type_chauffage', chauffage); // On filtre par type de chauffage
+
+        if (error) {
+            console.error('Erreur lors de la récupération du coût moyen:', error.message);
+            throw new Error('Erreur lors de la récupération du coût moyen.');
+        }
+
+        if (data.length === 0) {
+            console.warn('Type de chauffage non trouvé.');
+            throw new Error('Type de chauffage non trouvé.');
+        }
+
+        // Retourne la valeur récupérée
+        return data[0].cout_moyen_kwh;
+    } catch (err) {
+        console.error('Erreur attrapée dans la fonction:', err.message);
+        throw err; // Relance l'erreur pour être gérée par l'appelant
+    }
+}
+
+
+
+
+
+export async function recupererConsoDPE(classeDpe = 'B') { // Par défaut, utilise "DPE"
+    try {
+        // Récupération des consommations pour la classe DPE donnée
+        const { data, error } = await supabase
+            .from('dpeCoutAnnuel_kwh_m2_an') // Nom de la table
+            .select('consommation_min, consommation_moyenne, consommation_max') // Colonnes à récupérer
+            .eq('classe_dpe', classeDpe); // Filtre par classe DPE
+
+        if (error) {
+            console.error('Erreur lors de la récupération des consommations:', error.message);
+            throw new Error('Erreur lors de la récupération des consommations.');
+        }
+
+        if (data.length === 0) {
+            console.warn('Classe DPE non trouvée.');
+            throw new Error('Classe DPE non trouvée.');
+        }
+
+        // Retourne les consommations récupérées
+        return {
+            consommation_min: data[0].consommation_min,
+            consommation_moyenne: data[0].consommation_moyenne,
+            consommation_max: data[0].consommation_max,
+        };
+    } catch (err) {
+        console.error('Erreur attrapée dans la fonction:', err.message);
+        throw err; // Relance l'erreur pour être gérée par l'appelant
+    }
+}
+
+async function calculerConso(classeDpe, coutEnergy) {
+    try {
+        // Récupérer les consommations min, moyenne, max pour la classe DPE
+        const consommations = await recupererConsoDPE(classeDpe);
+
+        // Effectuer les calculs
+        const conso_prev_min_m2 = consommations.consommation_min * coutEnergy;
+        const conso_prev_average_m2 = consommations.consommation_moyenne * coutEnergy;
+        const conso_prev_max_m2 = consommations.consommation_max * coutEnergy;
+
+        // Retourner les résultats
+        return {
+            conso_prev_min_m2,
+            conso_prev_average_m2,
+            conso_prev_max_m2,
+        };
+    } catch (err) {
+        console.error('Erreur lors du calcul des consommations :', err.message);
+        throw err; // Relance l'erreur pour être gérée par l'appelant
+    }
+}
+
+module.exports = { getDpeScore, calculateIPE, recupererCoutMoyen, recupererConsoDPE,calculerConso };
+
+
+
