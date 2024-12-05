@@ -563,14 +563,14 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     const selectedDpeData = filteredDpeData.length > 0 ? filteredDpeData[0] : null; 
 
                     // Vérifiez si le type de chauffage est présent
-                    // const typeChauffage = selectedDpeData?.typeEnergiePrincipaleECS || null;
-                    // let IRE = null;
+                    const typeChauffage = selectedDpeData?.typeEnergiePrincipaleECS || null;
+                    let IRE = null;
 
-                    // // Si le type de chauffage est disponible, calculez l'IRE
-                    // if (typeChauffage) {
-                    //     const { IRE: calculatedIRE } = await calculateIRE(typeChauffage, selectedDpeData);
-                    //     IRE = calculatedIRE; // Assignez la valeur calculée de l'IRE
-                    // }// Retourner l'utilisateur avec ses données combinées
+                    // Si le type de chauffage est disponible, calculez l'IRE
+                    if (typeChauffage) {
+                        const { IRE: calculatedIRE } = await calculateIRE(typeChauffage, selectedDpeData);
+                        IRE = calculatedIRE; // Assignez la valeur calculée de l'IRE
+                    }// Retourner l'utilisateur avec ses données combinées
 
                 
 
@@ -636,8 +636,8 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                             chauffage: selectedDpeData ? selectedDpeData.chauffage : null,
                             latitude: latitude || null,
                             longitude: longitude || null,
-                            // IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
-                            // IPE: IPE || null ,
+                            IRE: IRE || null, // Remplir si l'IRE est calculé ou laisser null
+                            IPE: IPE || null ,
                             // conso_actuel_annuel: consoActuel || null,
                             // conso_prev_dpeB_min_annuel : conso_prev_min || null,
                             // conso_prev_dpeB_average: conso_prev_average || null,
