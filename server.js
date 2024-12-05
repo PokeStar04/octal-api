@@ -27,9 +27,6 @@ app.get('/users', async (req, res) => {
 });
 
 
-
-
-
 // Endpoint : Récupérer tous les utilisateurs depuis PostgreSQL
 app.get('/postgres-users', async (req, res) => {
     try {
@@ -40,8 +37,6 @@ app.get('/postgres-users', async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la récupération des utilisateurs depuis PostgreSQL.' });
     }
 });
-
-
 
 
 // Endpoint combiné pour récupérer les données géocodées, DVF, et DPE
