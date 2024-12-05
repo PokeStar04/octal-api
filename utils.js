@@ -1,4 +1,4 @@
- function getDpeScore(dpeClass) {
+ export function getDpeScore(dpeClass) {
     const dpeScores = {
         A: 1,
         B: 1.5,
@@ -11,7 +11,7 @@
     return dpeScores[dpeClass] || null; // Retourne null si le DPE est invalide
 }
 
- async function calculateIPE(selectedDpeData) {
+ export async function calculateIPE(selectedDpeData) {
     try {
         // Étape 1: Récupérer le DPE score
         const dpeClass = selectedDpeData?.etiquette_DPE || null;
@@ -53,7 +53,7 @@
 
 
 // Fonction pour récupérer le coût moyen à partir du type de chauffage
-async function recupererCoutMoyen(chauffage) {
+export async function recupererCoutMoyen(chauffage) {
     try {
         // Récupération du coût moyen pour le type de chauffage donné
         const { data, error } = await supabase
