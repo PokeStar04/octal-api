@@ -74,6 +74,9 @@ const { supabase, pool } = require('./db'); // Importer les connexions
         }
 
         // Retourne la valeur récupérée
+        console.log(data[0])
+
+        console.log(data[0].cout_moyen_kwh)
         return data[0].cout_moyen_kwh;
     } catch (err) {
         console.error('Erreur attrapée dans la fonction:', err.message);

@@ -574,32 +574,32 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
 
                 
 
-                    // // Récupérer le coût énergétique pour le type de chauffage
-                    // const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
+                    // Récupérer le coût énergétique pour le type de chauffage
+                    const coutEnergy = await recupererCoutMoyen(selectedDpeData.chauffage);
             
-                    // // Récupérer les consommations min, moyenne et max pour la classe DPE
-                    // const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
+                    // Récupérer les consommations min, moyenne et max pour la classe DPE
+                    const getDpeConso = await recupererConsoDPE('B'); // 'B' est utilisé comme exemple ici
             
-                    // // Calcul du coût actuel
-                    // const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
+                    // Calcul du coût actuel
+                    const consoActuel = selectedDpeData.conso5UsagesParM2 * coutEnergy * selectedDpeData.surface_habitable_logement;
             
-                    // // Calcul des consommations prévues
-                    // const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
-                    // const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
-                    // const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
+                    // Calcul des consommations prévues
+                    const conso_prev_min_m2 = getDpeConso.consommation_min * coutEnergy;
+                    const conso_prev_average_m2 = getDpeConso.consommation_moyenne * coutEnergy;
+                    const conso_prev_max_m2 = getDpeConso.consommation_max * coutEnergy;
             
-                    // // Finalisation des calculs
-                    // const conso_prev_min = conso_prev_min_m2 * selectedDpeData.surface_habitable_logement ;
-                    // const conso_prev_average = conso_prev_average_m2 * selectedDpeData.surface_habitable_logement;
-                    // const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
+                    // Finalisation des calculs
+                    const conso_prev_min = conso_prev_min_m2 * selectedDpeData.surface_habitable_logement ;
+                    const conso_prev_average = conso_prev_average_m2 * selectedDpeData.surface_habitable_logement;
+                    const conso_prev_max = conso_prev_max_m2 * selectedDpeData.surface_habitable_logement;
 
-                    // const economies_annuelles_min = consoActuel - conso_prev_min ;
-                    // const economies_annuelles_average = consoActuel - conso_prev_average;
-                    // const economies_annuelles_max = consoActuel - conso_prev_max;
+                    const economies_annuelles_min = consoActuel - conso_prev_min ;
+                    const economies_annuelles_average = consoActuel - conso_prev_average;
+                    const economies_annuelles_max = consoActuel - conso_prev_max;
 
-                    // const ROI_MIN = economies_annuelles_min;
-                    // const ROI_AVERAGE = economies_annuelles_average;
-                    // const ROI_MAX = economies_annuelles_max;
+                    const ROI_MIN = economies_annuelles_min;
+                    const ROI_AVERAGE = economies_annuelles_average;
+                    const ROI_MAX = economies_annuelles_max;
 
 
                     const IPE = await calculateIPE(selectedDpeData);
