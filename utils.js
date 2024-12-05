@@ -1,3 +1,5 @@
+const { supabase, pool } = require('./db'); // Importer les connexions
+
  function getDpeScore(dpeClass) {
     const dpeScores = {
         A: 1,
