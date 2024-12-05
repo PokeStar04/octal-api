@@ -612,7 +612,7 @@ app.get('/create_users-combined-data-in-db', async (req, res) => {
                     const insertResponse = await supabase.from('userVerified').insert([
                         {
                             id: user.id,
-                            userId: user.userId,
+                            userId: user.id,
                             nom: user.nom,
                             prenom: user.prenom,
                             numero: user.numero,
