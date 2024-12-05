@@ -755,7 +755,9 @@ app.post('/add-user-with-address', async (req, res) => {
         numero_voie, 
         Adresse_BAN, 
         Code_postal_BAN, 
-        Nom_rue_BAN 
+        Nom_rue_BAN,
+        commune,
+ 
     } = req.body;
 
     // Validation des paramètres
@@ -768,7 +770,7 @@ app.post('/add-user-with-address', async (req, res) => {
     try {
         // Insertion dans la base de données via Supabase
         const { data, error } = await supabase
-            .from('userTB')
+            .from('usersTB')
             .insert([
                 {
                     nom: nom,
@@ -778,6 +780,7 @@ app.post('/add-user-with-address', async (req, res) => {
                     "Adresse_(BAN)": Adresse_BAN,
                     "Code_postal_(BAN)": Code_postal_BAN,
                     "Nom_rue_(BAN)": Nom_rue_BAN,
+                    commune:commune
                 },
             ]);
 
