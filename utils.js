@@ -113,7 +113,7 @@ export async function recupererConsoDPE(classeDpe = 'B') { // Par défaut, utili
     }
 }
 
-async function calculerConso(classeDpe, coutEnergy) {
+export async function calculerConso(classeDpe, coutEnergy) {
     try {
         // Récupérer les consommations min, moyenne, max pour la classe DPE
         const consommations = await recupererConsoDPE(classeDpe);
