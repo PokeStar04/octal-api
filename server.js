@@ -889,6 +889,98 @@ app.post('/create-energy-cost', async (req, res) => {
     }
 });
 
+app.post('/create-renovation-data', async (req, res) => {
+    try {
+        // Données de rénovation à insérer dans la table
+        const renovationData = [
+            {
+                type_renovation: 'Isolation des murs',
+                description: 'Isolation intérieure ou extérieure',
+                cout_moyen_min: 50,
+                cout_moyen_max: 150,
+                cout_moyen_average: (50 + 150) / 2,
+                cout_total_min_appartement: 3000,
+                cout_total_max_appartement: 10000,
+                cout_total_average_appartement: (3000 + 10000) / 2,
+                cout_total_min_maison: 8000,
+                cout_total_max_maison: 20000,
+                cout_total_average_maison: (8000 + 20000) / 2,
+            },
+            {
+                type_renovation: 'Isolation des combles/toiture',
+                description: 'Isolation thermique des combles perdus ou aménagés',
+                cout_moyen_min: 30,
+                cout_moyen_max: 100,
+                cout_moyen_average: (30 + 100) / 2,
+                cout_total_min_appartement: 2000,
+                cout_total_max_appartement: 6000,
+                cout_total_average_appartement: (2000 + 6000) / 2,
+                cout_total_min_maison: 5000,
+                cout_total_max_maison: 15000,
+                cout_total_average_maison: (5000 + 15000) / 2,
+            },
+            {
+                type_renovation: 'Isolation des planchers',
+                description: 'Isolation thermique des planchers bas',
+                cout_moyen_min: 50,
+                cout_moyen_max: 100,
+                cout_moyen_average: (50 + 100) / 2,
+                cout_total_min_appartement: 1500,
+                cout_total_max_appartement: 4000,
+                cout_total_average_appartement: (1500 + 4000) / 2,
+                cout_total_min_maison: 3000,
+                cout_total_max_maison: 8000,
+                cout_total_average_maison: (3000 + 8000) / 2,
+            },
+            {
+                type_renovation: 'Remplacement des fenêtres',
+                description: 'Fenêtres double ou triple vitrage',
+                cout_moyen_min: 500,
+                cout_moyen_max: 1000,
+                cout_moyen_average: (500 + 1000) / 2,
+                cout_total_min_appartement: 5000,
+                cout_total_max_appartement: 8000,
+                cout_total_average_appartement: (5000 + 8000) / 2,
+                cout_total_min_maison: 6000,
+                cout_total_max_maison: 12000,
+                cout_total_average_maison: (6000 + 12000) / 2,
+            },
+            {
+                type_renovation: 'Chauffage : Pompe à chaleur (PAC)',
+                description: 'Pompe à chaleur air-eau ou géothermique',
+                cout_moyen_min: 10000,
+                cout_moyen_max: 18000,
+                cout_moyen_average: (10000 + 18000) / 2,
+                cout_total_min_appartement: 10000,
+                cout_total_max_appartement: 15000,
+                cout_total_average_appartement: (10000 + 15000) / 2,
+                cout_total_min_maison: 15000,
+                cout_total_max_maison: 25000,
+                cout_total_average_maison: (15000 + 25000) / 2,
+            },
+        ];
+
+        // Insérer les données dans la table `RenovationData`
+        const insertResponse = await supabase.from('renovationData').insert(renovationData);
+
+        // Vérifier s'il y a des erreurs
+        if (insertResponse.error) {
+            console.error('Erreur lors de l\'insertion des données de rénovation:', insertResponse.error.message);
+            return res.status(500).json({
+                error: 'Erreur lors de l\'insertion des données dans la table RenovationData.',
+            });
+        }
+
+        // Réponse en cas de succès
+        res.status(200).json({
+            message: 'Les données de rénovation ont été insérées avec succès.',
+            inserted: insertResponse.data,
+        });
+    } catch (error) {
+        console.error('Erreur inattendue:', error.message);
+        res.status(500).json({ error: 'Erreur inattendue lors de l\'insertion des données de rénovation.' });
+    }
+});
 
 
 // Démarrage du serveur
